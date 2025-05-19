@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient= axios.create({
-    baseURL: 'http://127.0.0.1:3004/Blog',
+    baseURL: 'http://127.0.0.1:3004/Blog/v1',
     timeout: 5000
 })
 
@@ -35,10 +35,20 @@ export const getPost = async () => {
     }
 }
 
+export const getPostById= async (id) => {
+    try {
+        const response= await apiClient.get(`/post/${id}`);
+        return response.data
+    } catch (e) {
+        checkResponseStatus(e);
+        return Promise.reject(e)
+    }
+}
+
 
 export const getPostByCourse = async (id) => {
     try {
-        const response = await apiClient.get(`/post/${id}`)
+        const response = await apiClient.get(`/post/cat/${id}`)
         return response.data
     } catch (e) {
         checkResponseStatus(e);
@@ -46,9 +56,9 @@ export const getPostByCourse = async (id) => {
     }
 }
 
-export const postComment = async (post, comment) => {
+export const postComment = async (post, data) => {
     try {
-        const response = await apiClient.post(`/course/${post}`,comment);
+        const response = await apiClient.post(`/post/${post}`,data);
         return response.data
     } catch (e) {
         checkResponseStatus(e);
