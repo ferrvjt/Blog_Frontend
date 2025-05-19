@@ -19,16 +19,25 @@ export const useComments = () => {
   const [comentarios, setComentarios] = useState([]);
   const [error, setError] = useState(null);
 
-  const handleGetCommentsByPost = async (postId) => {
-    try {
-      const data = await getPostById(postId); // O el endpoint correcto para obtener comentarios
-      setComentarios(data.opinion.comments);
-    } catch (e) {
-      toast.error("Error al obtener comentarios ❌");
-      setError(e.message);
+const handleGetCommentsByPost = async (postId) => {
+  try {
+    const data = await getPostById(postId);
+    if (data.success && data.opinion?.comments) {
+      const formattedComments = data.opinion.comments.map(c => ({
+        _id: c._id,
+        autor: c.user,
+        texto: c.bodyComment,
+        date: c.date,
+      }));
+      setComentarios(formattedComments); // ✅ Esto es lo que se debe actualizar
     }
-  };
+  } catch (error) {
+    // manejo de errores
+  }
+};
 
+  
+  
 
   const handleGetCursos = async () => {
   try {
