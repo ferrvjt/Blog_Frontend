@@ -29,20 +29,17 @@ const handleGetCommentsByPost = async (postId) => {
         texto: c.bodyComment,
         date: c.date,
       }));
-      setComentarios(formattedComments); // ✅ Esto es lo que se debe actualizar
+      setComentarios(formattedComments);
     }
   } catch (error) {
     // manejo de errores
   }
 };
 
-  
-  
-
-  const handleGetCursos = async () => {
+const handleGetCursos = async () => {
   try {
     const data = await getCourses();
-    setCursos(data.category || []); // ✅ extrae correctamente el array
+    setCursos(data.category || []); 
   } catch (e) {
     console.error('Error al obtener cursos:', e.message);
     setCursos([]);
@@ -136,6 +133,7 @@ const handleDeleteComentario = async (postId, commentId) => {
     posts,
     post,
     comentarios,
+    setComentarios,
     error,
     handleGetCursos,
     handleGetCursoPorNombre,

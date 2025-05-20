@@ -1,8 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useComments } from '../hooks/useComments';
 
-const OpinionForm = ({ post, postId, onSaved, editing, setEditing }) => {
-  const { handlePostComentario, handlePutComentario } = useComments();
+const OpinionForm = ({
+  post,
+  postId,
+  onSaved,
+  editing,
+  setEditing,
+  setComentarios
+}) => {
+  const { handlePostComentario, handlePutComentario, handleGetCommentsByPost } = useComments();
 
   const [autor, setAutor] = useState('');
   const [texto, setTexto] = useState('');
@@ -39,39 +46,50 @@ const OpinionForm = ({ post, postId, onSaved, editing, setEditing }) => {
     setTexto('');
     setAutor('');
     setMostrarFormulario(false);
+
+    const updated = await handleGetCommentsByPost(postId);
+    setComentarios(updated);
     onSaved();
   };
 
   return (
-    <div>
-      {/* Mostrar publicación arriba */}
-      <div style={{ marginBottom: '1rem', padding: '1rem', border: '1px solid #ccc' }}>
-        <h3>{post?.hdr}</h3>
-        <p>{post?.body}</p>
+    <div className="max-w-2xl mx-auto mb-8">
+      {/* Publicación */}
+      <div className="bg-white shadow-md rounded-xl p-6 border border-gray-200 mb-4">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-2">{post?.hdr}</h2>
+        <p className="text-gray-600">{post?.body}</p>
       </div>
 
-      {/* Botón para mostrar el formulario si no está editando */}
+      {/* Botón para mostrar formulario */}
       {!mostrarFormulario && !editing && (
-        <button onClick={() => setMostrarFormulario(true)}>Agregar opinión</button>
+        <button
+          onClick={() => setMostrarFormulario(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+        >
+          Agregar opinión
+        </button>
       )}
 
       {/* Formulario */}
       {(mostrarFormulario || editing) && (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="bg-gray-50 p-6 rounded-xl shadow mt-4 space-y-4">
           <input
             type="text"
             placeholder="Autor (opcional)"
             value={autor}
             onChange={(e) => setAutor(e.target.value)}
-            style={{ display: 'block', marginBottom: '0.5rem' }}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <textarea
             placeholder="Escribe tu opinión..."
             value={texto}
             onChange={(e) => setTexto(e.target.value)}
-            style={{ display: 'block', marginBottom: '0.5rem', width: '100%' }}
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-[100px]"
           />
-          <button type="submit">
+          <button
+            type="submit"
+            className="w-full py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+          >
             {editing ? 'Actualizar' : 'Enviar'}
           </button>
         </form>

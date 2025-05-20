@@ -8,20 +8,26 @@ const CourseList = () => {
 
   useEffect(() => {
     handleGetCursos();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   return (
     <div>
-      <h2>Cursos</h2>
-      <ul>
+      <h2 className="text-3xl font-bold mb-6">Cursos</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {Array.isArray(cursos) && cursos.map((curso) => (
-          <li key={curso._id} onClick={() => navigate(`/course/${curso.name.toLowerCase()}`)}>
-            {curso.name}
-          </li>
+          <div
+            key={curso._id}
+            onClick={() => navigate(`/course/${curso.name.toLowerCase()}`)}
+            className="cursor-pointer p-6 rounded-xl shadow bg-white dark:bg-gray-800 hover:shadow-lg transition"
+          >
+            <h3 className="text-xl font-semibold text-center">{curso.name}</h3>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
+
 
 export default CourseList;
