@@ -3,16 +3,18 @@ import BlogDetail from "./pages/blogDetail";
 import CourseList from "./pages/courseList"; // Página inicial
 import PostList from "./pages/postList";     // Lista de publicaciones por curso
 import Layout from './components/Layout';
-import './index.css'
+import './index.css';
 
 
 function App() {
   return (
+    <Layout>
       <Routes>
-        <Route path="/post/:id" element={<Layout><BlogDetail /></Layout>} />
-        <Route path="/" element={<Layout><CourseList /></Layout>} />
-        <Route path="/course/:name" element={<Layout><PostList /></Layout>} />
+        <Route path="/post/:id" element={<BlogDetail />} />
+        <Route path="/" element={<CourseList />} />
+        <Route path="/course/:name" element={<PostList />} />
       </Routes>
+    </Layout>
   );
 }
 

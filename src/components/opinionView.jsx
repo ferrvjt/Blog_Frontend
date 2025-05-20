@@ -1,6 +1,9 @@
-import { useComentarios } from '../hooks/useComentarios';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button, Container, Row, Col, Card } from 'react-bootstrap';
+import { useComentarios } from '../hooks/useComentarios'; // Asegúrate de tener el nombre correcto del archivo
 
-const ComentariosView = () => {
+const OpinionView = () => {
   const {
     posts,
     handleGetPosts,
@@ -18,13 +21,22 @@ const ComentariosView = () => {
   };
 
   return (
-    <div>
+    <Container className="pt-5 bg-light text-dark">
+      <h2 className="mb-4">Comentarios</h2>
       {posts.map(p => (
-        <div key={p._id}>
-          <h3>{p.titulo}</h3>
-        </div>
+        <Card key={p._id} className="mb-3 bg-white text-dark">
+          <Card.Body>
+            <h4>{p.titulo}</h4>
+            <Card.Text>{p.body}</Card.Text>
+            {/* Aquí podrías agregar más detalles del post si lo deseas */}
+          </Card.Body>
+        </Card>
       ))}
-      <button onClick={enviarComentario}>Agregar comentario</button>
-    </div>
+      <Button onClick={enviarComentario} variant="primary">
+        Agregar comentario
+      </Button>
+    </Container>
   );
 };
+
+export default OpinionView;

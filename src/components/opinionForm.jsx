@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useComments } from '../hooks/useComments';
+import { Button, Card, Form, Container } from 'react-bootstrap';
 
 const OpinionForm = ({
   post,
@@ -11,40 +12,41 @@ const OpinionForm = ({
 }) => {
   const { handlePostComentario, handlePutComentario, handleGetCommentsByPost } = useComments();
 
-  const [autor, setAutor] = useState('');
-  const [texto, setTexto] = useState('');
+  const [user, setUser] = useState('');
+  const [bodyComment, setBodyComment] = useState('');
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
   useEffect(() => {
     if (editing) {
-      setTexto(editing.bodyComment || '');
-      setAutor(editing.user || '');
+      setBodyComment(editing.bodyComment || '');
+      setUser(editing.user || '');
       setMostrarFormulario(true);
     } else {
-      setTexto('');
-      setAutor('');
+      setBodyComment('');
+      setUser('');
     }
   }, [editing]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!texto.trim()) return;
+    if (!bodyComment.trim()) return;
 
     const comentario = {
-      user: autor.trim() || 'Anónimo',
-      bodyComment: texto.trim(),
+      user: user.trim() || 'Anónimo',
+      bodyComment: bodyComment.trim(),
     };
 
     if (editing) {
       await handlePutComentario(postId, editing._id, comentario);
       setEditing(null);
     } else {
+      console.log(comentario);
       await handlePostComentario(postId, comentario);
     }
 
-    setTexto('');
-    setAutor('');
+    setBodyComment('');
+    setUser('');
     setMostrarFormulario(false);
 
     const updated = await handleGetCommentsByPost(postId);
@@ -53,48 +55,59 @@ const OpinionForm = ({
   };
 
   return (
-    <div className="max-w-2xl mx-auto mb-8">
-      {/* Publicación */}
-      <div className="bg-white shadow-md rounded-xl p-6 border border-gray-200 mb-4">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-2">{post?.hdr}</h2>
-        <p className="text-gray-600">{post?.body}</p>
-      </div>
+    <Container className="mb-5">
+      <Card className="mb-4 bg-white text-dark">
+        <Card.Body>
+          <Card.Title>{post?.hdr}</Card.Title>
+          <Card.Text>{post?.body}</Card.Text>
+        </Card.Body>
+      </Card>
 
-      {/* Botón para mostrar formulario */}
       {!mostrarFormulario && !editing && (
-        <button
-          onClick={() => setMostrarFormulario(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-        >
+        <Button onClick={() => setMostrarFormulario(true)} variant="primary" className="w-100">
           Agregar opinión
-        </button>
+        </Button>
       )}
 
-      {/* Formulario */}
       {(mostrarFormulario || editing) && (
-        <form onSubmit={handleSubmit} className="bg-gray-50 p-6 rounded-xl shadow mt-4 space-y-4">
-          <input
+        <Form onSubmit={handleSubmit} className="mt-4">
+        <Form.Group className="mb-3">
+          {editing && (
+            <Form.Label className="text-muted">
+              Autor anterior: <strong>{editing.user}</strong>
+            </Form.Label>
+          )}
+          <Form.Control
             type="text"
             placeholder="Autor (opcional)"
-            value={autor}
-            onChange={(e) => setAutor(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
           />
-          <textarea
+        </Form.Group>
+      
+        <Form.Group className="mb-3">
+          {editing && (
+            <Form.Label className="text-muted">
+              Comentario anterior:
+              <blockquote className="mb-0 mt-1">{editing.bodyComment}</blockquote>
+            </Form.Label>
+          )}
+          <Form.Control
+            as="textarea"
             placeholder="Escribe tu opinión..."
-            value={texto}
-            onChange={(e) => setTexto(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-[100px]"
+            value={bodyComment}
+            onChange={(e) => setBodyComment(e.target.value)}
+            rows={4}
           />
-          <button
-            type="submit"
-            className="w-full py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
-          >
-            {editing ? 'Actualizar' : 'Enviar'}
-          </button>
-        </form>
+        </Form.Group>
+      
+        <Button type="submit" variant="success" className="w-100">
+          {editing ? 'Actualizar' : 'Enviar'}
+        </Button>
+      </Form>
+      
       )}
-    </div>
+    </Container>
   );
 };
 

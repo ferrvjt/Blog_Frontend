@@ -1,8 +1,15 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 :root {
+  --primary: #007BFF;
+  --primary-dark: #0056b3;
+  --secondary: #FFA500;
+  --bg-light: #F8F9FA;
+  --card-bg: #FFFFFF;
+  --text-main: #212529;
+  --text-muted: #6C757D;
+  --success: #28A745;
+  --warning: #FFC107;
+  --danger: #DC3545;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -17,6 +24,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.card {
+  background-color: var(--card-bg);
+  color: var(--text-main);
+}
+
+.card-hover:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+  border: 1px solid var(--primary);
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -28,11 +46,13 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  display: block; /* Cambiar flex a block */
+  min-width: 100vw; /* Hacer que ocupe todo el ancho */
   min-height: 100vh;
+  background-color: var(--bg-light);
+  color: var(--text-main);
 }
+
 
 h1 {
   font-size: 3.2em;

@@ -23,13 +23,7 @@ const handleGetCommentsByPost = async (postId) => {
   try {
     const data = await getPostById(postId);
     if (data.success && data.opinion?.comments) {
-      const formattedComments = data.opinion.comments.map(c => ({
-        _id: c._id,
-        autor: c.user,
-        texto: c.bodyComment,
-        date: c.date,
-      }));
-      setComentarios(formattedComments);
+      setComentarios(data.opinion.comments);
     }
   } catch (error) {
     // manejo de errores

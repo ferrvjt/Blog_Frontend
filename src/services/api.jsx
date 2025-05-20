@@ -69,7 +69,7 @@ export const postComment = async (post, data) => {
 
 export const putComment = async (post,id, comment) => {
     try {
-        const response = await apiClient.put(`/course/${post}/${id}`,comment);
+        const response = await apiClient.put(`/post/${post}/${id}`,comment);
         return response.data
     } catch (e) {
         checkResponseStatus(e);
@@ -79,7 +79,7 @@ export const putComment = async (post,id, comment) => {
 
 export const deleteComment = async (post,id) => {
     try {
-        const response = await apiClient.post(`/course/${post}/${id}`);
+        const response = await apiClient.delete(`/post/${post}/${id}`);
         return response.data
     } catch (e) {
         checkResponseStatus(e);

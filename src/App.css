@@ -5,6 +5,17 @@
   text-align: center;
 }
 
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.card-hover:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+}
+
+
 .logo {
   height: 6em;
   padding: 1.5em;
